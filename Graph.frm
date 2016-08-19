@@ -41,8 +41,8 @@ Private Sub cmdOK2_Click()
  
  With Diag
   .SetSourceData (InstSheet.Range(InstSheet.Cells(Alfa + 2, Gamma + 2), _
-  InstSheet.Cells(Alfa + 22, Gamma + 2)))       'Создание диаграммы и задание области ячеек для диаграммы (1-ый ряд)
-  .ChartType = xlBarStacked                     'Задание типа диаграммы (линейчатая)
+  InstSheet.Cells(Alfa + 88, Gamma + 2)))       'Создание диаграммы и задание области ячеек для диаграммы (1-ый ряд)
+  .ChartType = xlXYScatterLinesNoMarkers        'Задание типа диаграммы (линейчатая без маркеров)
   .Name = "Диаграмма Ганта"                     'Название листа с диаграммой
   .HasTitle = True                              'Вывод названия диаграммы
   .ChartTitle.Text = "Диаграмма Ганта"          'Название диаграммы
@@ -50,13 +50,9 @@ Private Sub cmdOK2_Click()
   .Axes(xlCategory).HasTitle = True             'Вывод названия вертикальной оси
   .Axes(xlCategory).AxisTitle.Text = InstSheet.Cells(Alfa + 1, _
   Gamma).Value                                  'Присвоение названия вертикальной оси
-  .Axes(xlCategory).ReversePlotOrder = True     'Перевернуть ось OY
   .Axes(xlValue).HasTitle = True                'Вывод названия горизонтальной оси
   .Axes(xlValue).AxisTitle.Text = InstSheet.Cells(Alfa + 1, _
   Gamma + 1).Value                              'Присвоение названия горизонтальной оси
-  .Axes(xlValue).AxisTitle.Top = 700          'Смещение названия горизонтальной оси вниз
-  .PlotArea.Top = 50
-
 
   
   
@@ -66,18 +62,21 @@ Private Sub cmdOK2_Click()
   .SeriesCollection(1).Interior.Color = 16777215             'Задание цвета 1-го ряда (нет цвета)
   .FullSeriesCollection(1).XValues = _
   InstSheet.Range(InstSheet.Cells(Alfa + 2, Gamma), _
-  InstSheet.Cells(Alfa + 22, Gamma))                     'Задание названия элементов 1-го ряда
+  InstSheet.Cells(Alfa + 88, Gamma))                     'Задание названия элементов 1-го ряда
   .Axes(xlValue).TickLabelPosition = xlHigh              'Смещение линейки оси OX вниз
   
   'Настройка Ряда № 2:'
-  .SeriesCollection.NewSeries     'Создание нового ряда
-  .SeriesCollection(2).Values = InstSheet.Range(InstSheet.Cells(Alfa + 2, Gamma + 1), _
-  InstSheet.Cells(Alfa + 22, Gamma + 1))                 'Задание значений 2-го ряда для диаграммы:
-  .SeriesCollection(2).Name = _
-  InstSheet.Range(InstSheet.Cells(Alfa + 1, Gamma + 1))  'Задание имени 2-го ряда
-  .ChartGroups(1).GapWidth = 20                          'Увеличение размера линий графика
-  .SetElement (msoElementPrimaryValueGridLinesNone)      'Убрать линии по вертикали
-  .SetElement (msoElementPrimaryCategoryGridLinesMajor)  'Добавить линии по горизонтали
+  '.SeriesCollection.NewSeries     'Создание нового ряда
+  '.SeriesCollection(2).Values = InstSheet.Range(InstSheet.Cells(Alfa + 2, Gamma + 1), _
+  'InstSheet.Cells(Alfa + 22, Gamma + 1))                 'Задание значений 2-го ряда для диаграммы:
+  '.SeriesCollection(2).Name = _
+  'InstSheet.Range(InstSheet.Cells(Alfa + 1, Gamma + 1))  'Задание имени 2-го ряда
+  '.ChartGroups(1).GapWidth = 20                          'Увеличение размера линий графика
+  '.SetElement (msoElementPrimaryValueGridLinesNone)      'Убрать линии по вертикали
+  '.SetElement (msoElementPrimaryCategoryGridLinesMajor)  'Добавить линии по горизонтали
+  
+  
+  
   
   .Export Filename:=ActiveWorkbook.Path & "\" & DiagFileName, FilterName:="BMP" 'Экспортирования диаграммы в виде картинки
  End With

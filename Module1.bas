@@ -556,15 +556,23 @@ Sub Utility1()
          Alfa = Alfa + 1
          Cells(Alfa, Gamma).Value = "№ работы"
          Cells(Alfa, Gamma + 1).Value = "Время работы в часах"
-         Cells(Alfa, Gamma + 2).Value = "Начало работы"
-         Cells(Alfa, Gamma + 3).Value = "Конец работы"
-         
+         Cells(Alfa, Gamma + 2).Value = "Точки работы"
+         Cells(Alfa, Gamma + 3).Value = "Точки работы"
+		 
+		 For i = 1 To UBound(grMass) 
+		  Cells(Alfa, Gamma).Value = grMass(i, 3) 
+          Cells(Alfa, Gamma + 1).Value = Round(grMass(i, 2) - grMass(i, 1), 0)
+		 Next i 
+		 
          For i = 1 To UBound(grMass) 'запись значений для построения диаграммы Ганта'
           Alfa = Alfa + 1
-          Cells(Alfa, Gamma).Value = grMass(i, 3)
-          Cells(Alfa, Gamma + 1).Value = Round(grMass(i, 2) - grMass(i, 1), 0)
           Cells(Alfa, Gamma + 2).Value = Round(grMass(i, 1), 1)
-          Cells(Alfa, Gamma + 3).Value = Round(grMass(i, 2), 1)
+		  Alfa = Alfa + 1
+          Cells(Alfa, Gamma + 2).Value = Round(grMass(i, 1), 1)
+		  Alfa = Alfa + 1
+          Cells(Alfa, Gamma + 2).Value = Round(grMass(i, 2), 1)
+		  Alfa = Alfa + 1
+          Cells(Alfa, Gamma + 2).Value = Round(grMass(i, 2), 1)
          Next i
          
          Temp = 0
