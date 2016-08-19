@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub cmdOK1_Click()
  Set InstSheet = Application.ActiveSheet
  InstSheet.Cells(1, "Q").Value = 1

@@ -500,11 +500,11 @@ Sub Utility1()
          Tk = 0
          Shift = InStr(Temp, ",")
          
-         ReDim grMass(Beta*4 + 1, 3)         'Определение массива для построения (массив размера: [Betta]*4 x 3)
-         Cells(1, "H").Value = UBound(grMass) 'Сохранение в ячейку количества работ на графике
-         grMass(1, 1) = 0                  'Момент перед началом работы'
+         ReDim grMass(Beta * 4 + 1, 3)      'Определение массива для построения (массив размера: [Betta]*4 x 3)
+         Cells(1, "H").Value = UBound(grMass, 1) 'Сохранение в ячейку количества работ на графике
+         grMass(1, 1) = 0                   'Момент перед началом работы'
          grMass(1, 2) = 0
-		 grMass(1, 3) = 0
+         grMass(1, 3) = 0
          i = 1
          Do While Shift > 0
            ResSort = Left(Temp, Shift - 1) 'выделение номера работы'
@@ -518,51 +518,61 @@ Sub Utility1()
            If Tk > Exec Then                 'если момент готовности работы к обработке больше, момента готовности машины
             Exec = Tk                        'готовность машины определяется по моменту готовности работы
            End If
-		   
+                   
            i = i + 1
            grMass(i, 1) = Round(Exec, 1)   'Запись в массив момента начала работы'
-		   grMass(i, 2) = Job              'Запись номера работы в массив
-		   grMass(i, 3) = 0
-		   i = i + 1
-           grMass(i, 1) = Round(Exec, 1)   'Запись в массив момента начала работы'  
            grMass(i, 2) = Job              'Запись номера работы в массив
-		   grMass(i, 3) = 1
-		   
+           grMass(i, 3) = 0
+           i = i + 1
+           grMass(i, 1) = Round(Exec, 1)   'Запись в массив момента начала работы'
+           grMass(i, 2) = Job              'Запись номера работы в массив
+           grMass(i, 3) = 1
+                   
            Result = Result & Exec & " " & "(" & Job & ") "
         
            
            l = Job                          'установка номера выполненной работы
            Exec = Round(Exec + p(Job), 1)   'возможное начало  момента выполнения новой работы на машине (учитывает длительность текущей работы)
-		  
-		   i = i + 1
+                  
+           i = i + 1
            grMass(i, 1) = Round(Exec, 1)    'Запись в массив момента конца работы'
-		   grMass(i, 2) = Job
-		   grMass(i, 3) = 1
-		   
-		   i = i + 1
+           grMass(i, 2) = Job
+           grMass(i, 3) = 1
+                   
+           i = i + 1
            grMass(i, 1) = Round(Exec, 1)    'Запись в массив момента конца работы'
-		   grMass(i, 2) = Job
-		   grMass(i, 3) = 0
-		   
+           grMass(i, 2) = Job
+           grMass(i, 3) = 0
+                   
            Temp = Right(Temp, Len(Temp) - Shift) 'выделение остающейся части  последовательности работ'
            Shift = InStr(Temp, ",")
          Loop
          Job = CInt(Temp) 'номер последней планируемой  работы
          Exec = Exec + s(Vid(Job), Vid(l)) 'начало последней планируемой работы
-		 
+                 
          i = i + 1
          grMass(i, 1) = Round(Exec, 1)    'запись в массив момента начала последней работы'
          grMass(i, 2) = Job
-		 grMass(i, 3) = 1
+         grMass(i, 3) = 0
+         
+         i = i + 1
+         grMass(i, 1) = Round(Exec, 1)    'запись в массив момента начала последней работы'
+         grMass(i, 2) = Job
+         grMass(i, 3) = 1
           
          Result = Result & Exec & " " & "(" & Job & ") "
          Exec = Round(Exec + p(Job), 1)
-		 
-		 i = i + 1
+                 
+         i = i + 1
          grMass(i, 1) = Round(Exec, 1)    'запись в массив момента конца последней работы'
-         grMass(i, 2) = Job 
-		 grMass(i, 3) = 0
-		 
+         grMass(i, 2) = Job
+         grMass(i, 3) = 1
+         
+         i = i + 1
+         grMass(i, 1) = Round(Exec, 1)    'запись в массив момента начала последней работы'
+         grMass(i, 2) = Job
+         grMass(i, 3) = 0
+                 
          Result = Result & Exec
          Temp = Cells(1, "V").Value            'расположение строк рекомендуемых вариантов'
          Alfa = Range(Temp).Row
@@ -581,18 +591,19 @@ Sub Utility1()
          Cells(Alfa, Gamma + 1).Value = "Время работы в часах"
          Cells(Alfa, Gamma + 2).Value = "Точки работы"
          Cells(Alfa, Gamma + 3).Value = "Точки работы"
-		 
-		 For i = 1 To UBound(grMass) 
-		  Cells(Alfa, Gamma).Value = grMass(i, 2) 
-		 Next i 
-		 
-         For i = 1 To UBound(grMass) 'запись значений для построения диаграммы Ганта'
-          Cells(Alfa, Gamma + 2).Value = Round(grMass(i, 1), 1)
-		  Cells(Alfa, Gamma + 3).Value = Round(grMass(i, 3), 0)
+                 
+         MsgBox UBound(grMass, 1)
+         For i = 1 To UBound(grMass, 1)
+          Cells(Alfa + i, Gamma).Value = grMass(i, 2)
+         Next i
+                 
+         For i = 1 To UBound(grMass, 1) 'запись значений для построения диаграммы Ганта'
+          Cells(Alfa + i, Gamma + 2).Value = Round(grMass(i, 1), 1)
+          Cells(Alfa + i, Gamma + 3).Value = Round(grMass(i, 3), 0)
          Next i
          
          Temp = 0
-         For i = 1 To UBound(grMass) 'Нахождение времени окончания всех работ (максимальное значение времени)
+         For i = 1 To UBound(grMass, 1) 'Нахождение времени окончания всех работ (максимальное значение времени)
           If Temp < grMass(i, 2) Then
            Temp = grMass(i, 2)
           End If
